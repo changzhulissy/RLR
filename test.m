@@ -7,18 +7,18 @@ alpha = 0.01;
 epsilon = 0.1;
 Q = zeros(12,4);
 Q(10,:) = 0;
-episodes_num = 40000;
+episodes_num = 10000;
 for i = 1:episodes_num
     state = randi(12);
     if state == 5
         state = 1;
     end
-    if rand<epsilon
-            action = randi(length(a));
-    else        
-            [~,action] = max(Q(state,:));
-    end
     while(1)
+        if rand<epsilon
+            action = randi(length(a));
+        else        
+            [~,action] = max(Q(state,:));
+        end
         [snext,r] = simulator(state,action);
         if rand<epsilon
             action_next = randi(length(a));
@@ -27,7 +27,7 @@ for i = 1:episodes_num
         end
         Q(state,action) = Q(state,action)+alpha*(r+gamma*Q(snext,action_next)-Q(state,action));
         state = snext;
-        action = action_next;
+        %action = action_next;
         if snext == 10
             break
         end
@@ -36,8 +36,9 @@ for i = 1:episodes_num
 end
 [~,policy]= max(Q,[],2);
 policy_sarsa = policy;
+policy_sarsa
 %policy_sarsa =[4 4 4 1
-%               1 1 2 1
+%               1 1 1 1
 %               1 3 3 3];
 %% Q-Learning
 epsilon = 0.1;
