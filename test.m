@@ -5,11 +5,14 @@ a = [1,2,3,4]';
 gamma = 0.9;
 alpha = 0.01;
 epsilon = 0.1;
-Q = rand(12,4);
+Q = zeros(12,4);
 Q(10,:) = 0;
-episodes_num = 1000;
+episodes_num = 40000;
 for i = 1:episodes_num
-    state = 1;
+    state = randi(12);
+    if state == 5
+        state = 1;
+    end
     if rand<epsilon
             action = randi(length(a));
     else        
@@ -31,17 +34,24 @@ for i = 1:episodes_num
     end
 
 end
-[~,policy]= max(Q,[],2)
+[~,policy]= max(Q,[],2);
+policy_sarsa = policy;
+%policy_sarsa =[4 4 4 1
+%               1 1 2 1
+%               1 3 3 3];
 %% Q-Learning
-epsilon = 0.3;
+epsilon = 0.1;
 gamma = 0.9;
-alpha = 0.2;%step size
-Q = rand(12,4);
+alpha = 0.01;%step size
+Q = zeros(12,4);
 Q(10,:) = 0;
-episodes_num = 50;
+episodes_num = 50000;
 for i = 1:episodes_num
     % set the initial observation S
-    state = 1;
+    state = randi(12);
+    if state == 5
+        state = 1;
+    end
     while(1)
     %a
         if rand<epsilon
@@ -59,4 +69,8 @@ for i = 1:episodes_num
         end
     end
 end
-[~,policy]= max(Q,[],2)
+[~,policy]= max(Q,[],2);
+policy_qlearning = policy;
+% policy_sarsa =[4 4 4 1
+%                1 1 1 1
+%                1 3 3 3];
